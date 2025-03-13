@@ -1,41 +1,30 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
-generator client {
-  provider = "prisma-client-js"
+model Category {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  title      String   @unique
+  value      String
+  created_At DateTime @default(now())
+  updated_At DateTime @updatedAt
+
+  products Product[]
 }
 
-model Post {
-  id       String    @id @default(auto()) @map("_id") @db.ObjectId
-  slug     String    @unique
-  title    String
-  body     String
-  author   User      @relation(fields: [authorId], references: [id])
-  authorId String    @db.ObjectId
-  comments Comment[]
-}
-
-model User {
-  id      String   @id @default(auto()) @map("_id") @db.ObjectId
-  email   String   @unique
-  name    String?
-  address Address?
-  posts   Post[]
-}
-
-model Comment {
-  id      String @id @default(auto()) @map("_id") @db.ObjectId
-  comment String
-  post    Post   @relation(fields: [postId], references: [id])
-  postId  String @db.ObjectId
-}
-
-// Address is an embedded document
-type Address {
-  street String
-  city   String
-  state  String
-  zip    String
+model Product {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  category   String
+  name       String
+  image      String
+  price      Int
+  created_At DateTime  @default(now())
+  updated_At DateTime  @updatedAt
+  Category   Category? @relation(fields: [categoryId], references: [id])
+  categoryId String?   @db.ObjectId
 }
