@@ -7,24 +7,29 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Category {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  title      String   @unique
-  value      String
-  created_At DateTime @default(now())
-  updated_At DateTime @updatedAt
-
-  products Product[]
+enum Role {
+  ADMIN
+  USER
 }
 
-model Product {
-  id         String    @id @default(auto()) @map("_id") @db.ObjectId
-  category   String
+model User {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  status     Boolean  @default(true)
   name       String
-  image      String
-  price      Int
-  created_At DateTime  @default(now())
-  updated_At DateTime  @updatedAt
-  Category   Category? @relation(fields: [categoryId], references: [id])
-  categoryId String?   @db.ObjectId
+  email      String   @unique
+  role       Role     @default(USER)
+  created_At DateTime @default(now())
+  updated_At DateTime @updatedAt
+  posts      Post[]
+}
+
+model Post {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  title      String
+  subtitle   String?
+  body       String
+  userId     String   @db.ObjectId
+  author     User     @relation(fields: [userId], references: [id])
+  created_At DateTime @default(now())
+  updated_At DateTime @updatedAt
 }
