@@ -1,2 +1,6 @@
 
+PORT=3000
+
+NODE_ENV= 'development'
+
 DATABASE_URL="mongodb+srv://henriqueferraz:Ofnetlai7452@hferraz.851od.mongodb.net/data?retryWrites=true&w=majority&appName=HFerraz"
