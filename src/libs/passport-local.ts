@@ -1,5 +1,5 @@
 import { Strategy as LocalStrategy } from 'passport-local';
-import { createUserToken, findUserByEmailAndPassword } from '../services/auth';
+import { createUserJWT, createUserToken, findUserByEmailAndPassword } from '../services/auth';
 import { LocalStrategyResponse } from '../types/user';
 import { RequestHandler } from 'express';
 import passport from 'passport';
@@ -13,7 +13,7 @@ export const localStrategy = new LocalStrategy({
 
     if (user) {
 
-        const token = createUserToken(user);
+        const token = createUserJWT(user);
         const response: LocalStrategyResponse = {
             auth: { token },
             user
