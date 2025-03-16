@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createUser, createUsers } from '../services/user';
+import { createUser, createUsers, getAllUsers, getUserByEmail } from '../services/user';
 
 export const mainRouter = Router();
 
@@ -28,5 +28,19 @@ mainRouter.post('/users', async (req, res) => {
         res.status(201).json({ users });
     } else {
         res.status(400).json({ error: 'Erro ao criar usuários' });
+    }
+});
+
+mainRouter.get('/users', async (req, res) => {
+    const users = await getAllUsers();
+    res.json({ users });
+});
+
+mainRouter.get('/user/:email', async (req, res) => {
+    const user = await getUserByEmail(req.body.email);
+    if (user) {
+        res.json({ user });
+    } else {
+        res.status(404).json({ error: 'Usuário não encontrado' });
     }
 });
