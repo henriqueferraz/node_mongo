@@ -18,7 +18,7 @@ export const createUsers = async (users: Prisma.UserCreateInput[]) => {
     });
 }
 
-export const getAllUsers = async () => {
+export const AllUsers = async () => {
     return await prisma.user.findMany({
         select: {
             id: true,
@@ -29,7 +29,7 @@ export const getAllUsers = async () => {
     });
 };
 
-export const getUserByEmail = async (email: string) => {
+export const UserByEmail = async (email: string) => {
     return await prisma.user.findUnique({
         where: {
             email

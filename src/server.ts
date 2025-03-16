@@ -1,8 +1,10 @@
 import express, { urlencoded } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import { mainRouter } from './routes/main';
 import helmet from 'helmet';
+import passport from 'passport';
+import { mainRouter } from './routes/main';
+import { localStrategy } from './libs/passport-local';
 
 dotenv.config();
 
@@ -13,6 +15,9 @@ server.use(cors());
 server.use(urlencoded({ extended: true }));
 server.disable('x-powered-by');
 server.use(express.json());
+
+passport.use(localStrategy);
+server.use(passport.initialize());
 
 server.use(mainRouter);
 
